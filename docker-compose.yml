@@ -1,0 +1,17 @@
+version: "2.0"
+
+services:
+  cowrie:
+    restart: always
+    build: 
+      context: ./cowrie
+    image: hallmanhe/cowrie:latest
+    container_name: cowrie
+    ports:
+      - "22:2222"
+     # - "2223:2223"
+    volumes:
+      # Map a local cowrie config dir into the container.
+      - "/root/cowrie_honeypot/etc:/cowrie/cowrie-git/etc"
+      # Make cowrie logs persistent through container recreates.
+      - "/root/cowrie_honeypot/var:/cowrie/cowrie-git/var"
