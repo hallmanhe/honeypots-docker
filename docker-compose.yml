@@ -5,6 +5,7 @@ services:
     restart: always
     build: 
       context: ./cowrie
+    network_mode: "bridge"
     image: hallmanhe/cowrie:latest
     container_name: cowrie
     ports:
@@ -15,3 +16,16 @@ services:
       - "/root/cowrie_honeypot/etc:/cowrie/cowrie-git/etc"
       # Make cowrie logs persistent through container recreates.
       - "/root/cowrie_honeypot/var:/cowrie/cowrie-git/var"
+
+  p0f:
+    restart: always
+    build:
+     context: ./p0f
+    network_mode: "host"  #bridge host none container:[service name]  container:[container name/id]
+    image: hallmanhe/p0f:latest
+    container_name: p0f
+    volumes:
+     #Map a supervisor config dir into the container
+     - /root/p0f_honeypot/etc:/etc/supervisor/conf.d
+     #Make p0f logs persistent throuth container recreates
+     - /root/p0f_honeypot/var:/var/log/p0f
