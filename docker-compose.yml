@@ -29,3 +29,15 @@ services:
      - /root/p0f_honeypot/etc:/etc/supervisor/conf.d
      #Make p0f logs persistent throuth container recreates
      - /root/p0f_honeypot/var:/var/log/p0f
+
+  dionaea:
+    restart: always
+    build:
+     context: ./glastopf
+    network_mode: "bridge"
+    image: hallmanhe/glastopf
+    container_name: glastopf
+    ports:
+     - "80:80" #http
+    volumes:
+     - /root/glastopf_honeypot:/opt/myhoneypot
