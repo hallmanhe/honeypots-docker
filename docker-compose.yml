@@ -41,3 +41,15 @@ services:
      - "80:80" #http
     volumes:
      - /root/glastopf_honeypot:/opt/myhoneypot
+
+  suricata:
+    restart: always
+    build:
+     context: ./suricata
+    network_mode: "host"
+    image: hallmanhe/suricata
+    container_name: suricata
+    volumes:
+     - /root/suricata_honeypot/etc/supervisor:/etc/supervisor/conf.d
+     - /root/suricata_honeypot/etc/suricata:/opt/suricata/etc/suricata
+     - /root/suricata_honeypot/var/log:/var/log/suricata
