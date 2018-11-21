@@ -26,11 +26,11 @@ services:
     container_name: p0f
     volumes:
      #Map a supervisor config dir into the container
-     - /root/p0f_honeypot/etc:/etc/supervisor/conf.d
+     - /root/p0f_honeypot/etc/supervisor:/etc/supervisor/conf.d
      #Make p0f logs persistent throuth container recreates
-     - /root/p0f_honeypot/var:/var/log/p0f
+     - /root/p0f_honeypot/var/log:/var/log/p0f
 
-  dionaea:
+  glastopf:
     restart: always
     build:
      context: ./glastopf
@@ -53,3 +53,27 @@ services:
      - /root/suricata_honeypot/etc/supervisor:/etc/supervisor/conf.d
      - /root/suricata_honeypot/etc/suricata:/opt/suricata/etc/suricata
      - /root/suricata_honeypot/var/log:/var/log/suricata
+
+  dionaea:
+    restart: always
+    build:
+      context: ./dionaea
+    network_mode: "bridge"
+    image: hallmanhe/dionaea
+    container_name: dionaea
+    ports:
+     - "21:21" #Ftp
+     - "69:69/udp" #Tftp
+     - "135:135" #MS DCE RPC
+     - "1433:1433" #MS SQL Server
+     - "1723:1723" #PPTP
+     - "1883:1883" #MQTT
+     - "3306:3306" #MySQL
+     - "5060:5060" #sip
+     - "5060:5060/udp" #sip
+     - "5061:5061" #sip
+     - "11211:11211" #Memcached
+     - "27017:27017" #MongoDB
+    volumes:
+     - /root/dionaea_honeypot/var/log:/opt/dionaea/var/log/dionaea
+#     - /root/dionaea_honeypot/etc:/opt/dionaea/etc/dionaea
